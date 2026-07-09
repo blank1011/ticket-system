@@ -375,6 +375,22 @@
   border-bottom: 1px solid #1f2a3d;
 }
 
+.tableSortBtn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.tableSortBtn:hover {
+  color: #9cb3d5;
+}
+
 .ticketRow {
   border-bottom: 1px solid #1a2434;
 }

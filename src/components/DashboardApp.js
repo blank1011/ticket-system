@@ -33,6 +33,21 @@ const PRIORITY_OPTIONS = [
   { value: "done", label: "DONE" },
 ];
 
+const PRIORITY_SORT_ORDER = {
+  critical: 5,
+  high_priority: 4,
+  medium: 3,
+  not_priority: 2,
+  done: 1,
+};
+
+const STATUS_SORT_ORDER = {
+  open: 4,
+  in_progress: 3,
+  resolve: 2,
+  delete: 1,
+};
+
 function normalizeStatus(value) {
   if (value === "closed") {
     return "resolve";
@@ -73,6 +88,8 @@ export default function DashboardApp({ username }) {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("priority");
+  const [sortDirection, setSortDirection] = useState("desc");
   const [showNewTicket, setShowNewTicket] = useState(false);
   const [ticketForm, setTicketForm] = useState(EMPTY_TICKET);
   const [message, setMessage] = useState("");
@@ -187,6 +204,48 @@ export default function DashboardApp({ username }) {
     });
   }, [priorityFilter, query, statusFilter, tickets]);
 
+  const sortedTickets = useMemo(() => {
+    const sorted = [...visibleTickets];
+
+    sorted.sort((a, b) => {
+      let comparison = 0;
+
+      if (sortBy === "title") {
+        comparison = a.title.localeCompare(b.title);
+      } else if (sortBy === "priority") {
+        comparison =
+          (PRIORITY_SORT_ORDER[a.priority] || 0) -
+          (PRIORITY_SORT_ORDER[b.priority] || 0);
+      } else if (sortBy === "status") {
+        comparison =
+          (STATUS_SORT_ORDER[a.status] || 0) -
+          (STATUS_SORT_ORDER[b.status] || 0);
+      }
+
+      if (comparison === 0) {
+        comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      }
+
+      return sortDirection === "asc" ? comparison : -comparison;
+    });
+
+    return sorted;
+  }, [sortBy, sortDirection, visibleTickets]);
+
+  function toggleSort(field) {
+    setSortBy((currentField) => {
+      if (currentField === field) {
+        setSortDirection((currentDirection) =>
+          currentDirection === "asc" ? "desc" : "asc"
+        );
+        return currentField;
+      }
+
+      setSortDirection(field === "title" ? "asc" : "desc");
+      return field;
+    });
+  }
+
   async function createProject(event) {
     event.preventDefault();
     setMessage("");
@@ -293,13 +352,13 @@ export default function DashboardApp({ username }) {
   }
 
   function exportVisibleTickets() {
-    if (!visibleTickets.length) {
+    if (!sortedTickets.length) {
       setMessage("No tickets to export for this filter.");
       return;
     }
 
     const header = ["title", "description", "status", "priority", "createdAt"];
-    const rows = visibleTickets.map((ticket) => [
+    const rows = sortedTickets.map((ticket) => [
       ticket.title,
       ticket.description || "",
       ticket.status,
@@ -545,16 +604,34 @@ export default function DashboardApp({ username }) {
 
         <section className={styles.tableWrap}>
           <div className={styles.tableHead}>
-            <span>Title</span>
+            <button
+              type="button"
+              className={styles.tableSortBtn}
+              onClick={() => toggleSort("title")}
+            >
+              Title {sortBy === "title" ? (sortDirection === "asc" ? "↑" : "↓") : ""}
+            </button>
             <span>Description</span>
-            <span>Priority</span>
-            <span>Status</span>
+            <button
+              type="button"
+              className={styles.tableSortBtn}
+              onClick={() => toggleSort("priority")}
+            >
+              Priority {sortBy === "priority" ? (sortDirection === "asc" ? "↑" : "↓") : ""}
+            </button>
+            <button
+              type="button"
+              className={styles.tableSortBtn}
+              onClick={() => toggleSort("status")}
+            >
+              Status {sortBy === "status" ? (sortDirection === "asc" ? "↑" : "↓") : ""}
+            </button>
             <span>Action</span>
           </div>
 
-          {visibleTickets.length === 0 ? <p className={styles.empty}>No matching tickets.</p> : null}
+          {sortedTickets.length === 0 ? <p className={styles.empty}>No matching tickets.</p> : null}
 
-          {visibleTickets.map((ticket) => (
+          {sortedTickets.map((ticket) => (
             <article key={ticket._id} className={styles.ticketRow}>
               <p className={styles.ticketTitle}>{ticket.title}</p>
               <p className={styles.ticketDesc}>{ticket.description || "-"}</p>
