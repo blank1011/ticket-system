@@ -1,0 +1,520 @@
+.shell {
+  width: 100vw;
+  margin: 0;
+  border-radius: 0;
+  border: 0;
+  background: #0f1319;
+  display: grid;
+  grid-template-columns: 285px minmax(0, 1fr);
+  column-gap: 30px;
+  min-height: 100vh;
+  box-shadow: 0 24px 70px rgba(3, 8, 15, 0.55);
+  overflow: hidden;
+  animation: entry 460ms ease both;
+}
+
+.loading {
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  color: #b4becd;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #0a0f16 0%, #090d12 100%);
+  border: 1px solid #202838;
+  border-radius: 14px;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.8rem;
+}
+
+.brandBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.brandIdentity {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.brandMark {
+  width: 38px;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #3f8cff, #2260bf);
+  color: #f7fbff;
+  font-weight: 700;
+}
+
+.brandBlock h2 {
+  color: #f2f6ff;
+  font-size: 1.08rem;
+}
+
+.brandBlock p {
+  color: #8692a6;
+  font-size: 0.84rem;
+}
+
+.navSection {
+  display: grid;
+  justify-items: stretch;
+  gap: 0.35rem;
+}
+
+.navTitle {
+  color: #5f6a7d;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.07em;
+}
+
+.navItem {
+  border: 1px solid transparent;
+  background: transparent;
+  color: #9ca8bd;
+  border-radius: 10px;
+  padding: 0.52rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 2.25rem;
+  cursor: pointer;
+}
+
+.navItemText {
+  font-size: 0.88rem;
+}
+
+.navItemActive {
+  border-color: #2d3647;
+  background: #121924;
+  color: #edf3ff;
+}
+
+.projectPanel {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 0.55rem;
+  min-height: 0;
+}
+
+.panelHeaderLine p {
+  color: #a9b6ca;
+  font-size: 0.87rem;
+  padding-inline: 0.1rem;
+}
+
+.newProjectForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.05rem;
+  gap: 0.4rem;
+}
+
+.newProjectForm input,
+.ticketForm input,
+.ticketForm textarea,
+.ticketForm select,
+.search {
+  border: 1px solid #2a3446;
+  background: #0f161f;
+  color: #e6ecf8;
+  border-radius: 10px;
+  padding: 0.56rem 0.62rem;
+  font: inherit;
+}
+
+.newProjectForm button,
+.ticketForm button,
+.logoutBtn,
+.projectDelete,
+.deleteAction,
+.primaryAction,
+.secondaryAction,
+.tab {
+  border: 1px solid #33435b;
+  border-radius: 10px;
+  background: #111a24;
+  color: #dbe7ff;
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.projectList {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 0.15rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+.projectRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid #202a3b;
+  border-radius: 10px;
+  padding: 0.22rem 0.24rem;
+  background: #0e141e;
+  overflow: hidden;
+}
+
+.projectRowActive {
+  border-color: #7aa0db;
+  box-shadow: inset 0 0 0 1px rgba(124, 176, 255, 0.44);
+  background: #122033;
+}
+
+.projectRowActive .projectName {
+  font-weight: 700;
+}
+
+.projectSelect {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: #dbe6f8;
+  text-align: left;
+  border-radius: 8px;
+  padding: 0.46rem 0.4rem;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.projectName {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projectDelete {
+  width: 1.68rem;
+  height: 1.68rem;
+  min-width: 1.68rem;
+  padding: 0;
+  margin-right: 0;
+  margin-left: 0.22rem;
+  background: #181f2c;
+  border-color: #3a4e69;
+  color: #9eb8da;
+  border-radius: 8px;
+}
+
+.projectDelete svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.2;
+  color: currentColor;
+}
+
+.projectDelete:hover {
+  background: #4a1a2e;
+  border-color: #cf5f88;
+  color: #ffe2ec;
+}
+
+.logoutBtn {
+  background: #1e1320;
+  border-color: #3e263f;
+  margin-top: 0.2rem;
+}
+
+.mainPanel {
+  padding: 1rem;
+  background: linear-gradient(180deg, #11161f 0%, #0f141d 100%);
+  border: 1px solid #222c3e;
+  border-radius: 14px;
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.tableHeader h1 {
+  color: #f2f5ff;
+  font-size: clamp(1.1rem, 2.4vw, 1.65rem);
+}
+
+.tableHeader p {
+  color: #8d99ac;
+  margin-top: 0.18rem;
+  font-size: 0.9rem;
+}
+
+.actionRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.primaryAction {
+  background: linear-gradient(120deg, #ebf2ff, #c7ddff);
+  color: #08172f;
+  border-color: #90b9f6;
+  font-weight: 700;
+  min-width: 2.25rem;
+}
+
+.primaryAction:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.secondaryAction {
+  background: #0f1b2b;
+  min-width: 2.25rem;
+}
+
+.message {
+  margin-bottom: 0.6rem;
+  padding: 0.58rem 0.68rem;
+  border-radius: 10px;
+  color: #ffd7d7;
+  background: #2c1822;
+  border: 1px solid #533145;
+}
+
+.toolsRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.45rem;
+  row-gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  color: #b9c6da;
+}
+
+.tabActive {
+  background: #1f2f46;
+  border-color: #496ea0;
+  color: #f1f6ff;
+}
+
+.search {
+  min-width: 240px;
+}
+
+.ticketForm {
+  margin-bottom: 0.75rem;
+  border: 1px solid #233147;
+  border-radius: 12px;
+  background: #101925;
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.tableWrap {
+  border: 1px solid #222c3e;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0c1118;
+}
+
+.tableHead,
+.ticketRow {
+  display: grid;
+  grid-template-columns: 1.4fr 2.2fr 0.8fr 0.9fr 0.7fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.62rem 0.78rem;
+}
+
+.tableHead {
+  color: #6f7f97;
+  font-size: 0.81rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #1f2a3d;
+}
+
+.ticketRow {
+  border-bottom: 1px solid #1a2434;
+}
+
+.ticketRow:last-child {
+  border-bottom: 0;
+}
+
+.ticketTitle {
+  color: #eaf0ff;
+  font-weight: 500;
+}
+
+.ticketDesc {
+  color: #93a2b7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inlineSelect {
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.52rem;
+  width: fit-content;
+  min-width: 128px;
+  background: transparent;
+  appearance: none;
+}
+
+.inlineSelect option {
+  color: #e8efff;
+  background: #0f1a29;
+}
+
+.prioritynot_priority {
+  color: #80f3c8;
+  border-color: #2f745c;
+  background: #12291f;
+}
+
+.prioritymedium {
+  color: #9ec6ff;
+  border-color: #3a6093;
+  background: #152338;
+}
+
+.priorityhigh_priority {
+  color: #ffc3a0;
+  border-color: #885f47;
+  background: #2f2119;
+}
+
+.prioritycritical {
+  color: #ffb4bd;
+  border-color: #8f3f56;
+  background: #321a25;
+}
+
+.statusopen {
+  color: #ffd08b;
+  border-color: #74562d;
+  background: #292013;
+}
+
+.statusinprogress {
+  color: #9bc0ff;
+  border-color: #3a5f96;
+  background: #13223a;
+}
+
+.statusresolve {
+  color: #9de7ca;
+  border-color: #3c7a65;
+  background: #13271f;
+}
+
+.statusdelete {
+  color: #ffbdc8;
+  border-color: #8f4559;
+  background: #301a24;
+}
+
+.deleteAction {
+  justify-self: start;
+  background: #2a1822;
+  border-color: #583246;
+}
+
+.empty {
+  padding: 0.8rem;
+  color: #8897ad;
+}
+
+@media (max-width: 1080px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #202838;
+  }
+
+  .brandBlock {
+    align-items: flex-start;
+  }
+
+  .tableHead,
+  .ticketRow {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .tableHead {
+    display: none;
+  }
+
+  .ticketDesc {
+    white-space: normal;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .toolsRow {
+    flex-direction: column;
+  }
+
+  .search {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@keyframes entry {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
