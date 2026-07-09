@@ -30,6 +30,7 @@ const PRIORITY_OPTIONS = [
   { value: "medium", label: "Medium" },
   { value: "high_priority", label: "High Priority" },
   { value: "critical", label: "Critical" },
+  { value: "done", label: "DONE" },
 ];
 
 function normalizeStatus(value) {
@@ -49,7 +50,19 @@ function normalizePriority(value) {
     return "high_priority";
   }
 
+  if (value === "completed") {
+    return "done";
+  }
+
   return value;
+}
+
+function applyResolvedPriority(status, priority) {
+  if (status === "resolve" || status === "delete") {
+    return "done";
+  }
+
+  return priority;
 }
 
 export default function DashboardApp({ username }) {
@@ -59,6 +72,7 @@ export default function DashboardApp({ username }) {
   const [tickets, setTickets] = useState([]);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
   const [showNewTicket, setShowNewTicket] = useState(false);
   const [ticketForm, setTicketForm] = useState(EMPTY_TICKET);
   const [message, setMessage] = useState("");
@@ -155,8 +169,10 @@ export default function DashboardApp({ username }) {
 
     return tickets.filter((ticket) => {
       const statusMatches = statusFilter === "all" || ticket.status === statusFilter;
+      const priorityMatches =
+        priorityFilter === "all" || ticket.priority === priorityFilter;
 
-      if (!statusMatches) {
+      if (!statusMatches || !priorityMatches) {
         return false;
       }
 
@@ -169,7 +185,7 @@ export default function DashboardApp({ username }) {
         ticket.description.toLowerCase().includes(loweredQuery)
       );
     });
-  }, [query, statusFilter, tickets]);
+  }, [priorityFilter, query, statusFilter, tickets]);
 
   async function createProject(event) {
     event.preventDefault();
@@ -448,6 +464,18 @@ export default function DashboardApp({ username }) {
               </button>
             ))}
           </div>
+          <select
+            className={styles.priorityFilter}
+            value={priorityFilter}
+            onChange={(event) => setPriorityFilter(event.target.value)}
+          >
+            <option value="all">All Priorities</option>
+            <option value="critical">Critical</option>
+            <option value="high_priority">High Priority</option>
+            <option value="medium">Medium</option>
+            <option value="not_priority">Not Priority</option>
+            <option value="done">DONE</option>
+          </select>
           <input
             className={styles.search}
             placeholder="Search title or note"
@@ -480,7 +508,15 @@ export default function DashboardApp({ username }) {
               <select
                 value={ticketForm.status}
                 onChange={(event) =>
-                  setTicketForm((previous) => ({ ...previous, status: event.target.value }))
+                  setTicketForm((previous) => {
+                    const nextStatus = event.target.value;
+
+                    return {
+                      ...previous,
+                      status: nextStatus,
+                      priority: applyResolvedPriority(nextStatus, previous.priority),
+                    };
+                  })
                 }
               >
                 {STATUS_OPTIONS.map((option) => (
@@ -491,6 +527,7 @@ export default function DashboardApp({ username }) {
               </select>
               <select
                 value={ticketForm.priority}
+                disabled={ticketForm.status === "resolve" || ticketForm.status === "delete"}
                 onChange={(event) =>
                   setTicketForm((previous) => ({ ...previous, priority: event.target.value }))
                 }
@@ -524,6 +561,7 @@ export default function DashboardApp({ username }) {
               <select
                 className={`${styles.inlineSelect} ${styles[`priority${ticket.priority}`]}`}
                 value={ticket.priority}
+                disabled={ticket.status === "resolve" || ticket.status === "delete"}
                 onChange={(event) =>
                   updateTicketField(ticket._id, { priority: normalizePriority(event.target.value) })
                 }

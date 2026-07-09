@@ -132,6 +132,7 @@
 .ticketForm input,
 .ticketForm textarea,
 .ticketForm select,
+.priorityFilter,
 .search {
   border: 1px solid #2a3446;
   background: #0f161f;
@@ -330,6 +331,10 @@
   min-width: 240px;
 }
 
+.priorityFilter {
+  min-width: 170px;
+}
+
 .ticketForm {
   margin-bottom: 0.75rem;
   border: 1px solid #233147;
@@ -428,6 +433,12 @@
   color: #ffb4bd;
   border-color: #8f3f56;
   background: #321a25;
+}
+
+.prioritydone {
+  color: #9ef1b9;
+  border-color: #3d8a59;
+  background: #142a1d;
 }
 
 .statusopen {

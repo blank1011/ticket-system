@@ -5,7 +5,7 @@ import { getSessionFromRequest } from "@/lib/auth";
 import { Ticket } from "@/models/Ticket";
 
 const STATUS_VALUES = ["open", "in_progress", "resolve", "delete"];
-const PRIORITY_VALUES = ["not_priority", "medium", "high_priority", "critical"];
+const PRIORITY_VALUES = ["not_priority", "medium", "high_priority", "critical", "done"];
 
 function normalizeStatus(rawStatus) {
   const formatted = String(rawStatus || "")
@@ -41,6 +41,10 @@ function normalizePriority(rawPriority) {
   return formatted;
 }
 
+function shouldAutoDone(status) {
+  return status === "resolve" || status === "delete";
+}
+
 export async function PATCH(request, { params }) {
   if (!getSessionFromRequest(request)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -70,6 +74,10 @@ export async function PATCH(request, { params }) {
         return NextResponse.json({ error: "Invalid priority." }, { status: 400 });
       }
       update.priority = priority;
+    }
+
+    if (update.status && shouldAutoDone(update.status)) {
+      update.priority = "done";
     }
 
     if (!Object.keys(update).length) {

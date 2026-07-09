@@ -6,7 +6,7 @@ import { Project } from "@/models/Project";
 import { Ticket } from "@/models/Ticket";
 
 const STATUS_VALUES = ["open", "in_progress", "resolve", "delete"];
-const PRIORITY_VALUES = ["not_priority", "medium", "high_priority", "critical"];
+const PRIORITY_VALUES = ["not_priority", "medium", "high_priority", "critical", "done"];
 
 function normalizeStatus(rawStatus) {
   const formatted = String(rawStatus || "")
@@ -40,6 +40,14 @@ function normalizePriority(rawPriority) {
   }
 
   return formatted;
+}
+
+function applyResolvedPriority(status, priority) {
+  if (status === "resolve" || status === "delete") {
+    return "done";
+  }
+
+  return priority;
 }
 
 export async function GET(request) {
@@ -76,7 +84,8 @@ export async function POST(request) {
     const title = String(body?.title || "").trim();
     const description = String(body?.description || "").trim();
     const status = normalizeStatus(String(body?.status || "open").trim());
-    const priority = normalizePriority(String(body?.priority || "not_priority").trim());
+    const rawPriority = normalizePriority(String(body?.priority || "not_priority").trim());
+    const priority = applyResolvedPriority(status, rawPriority);
 
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
       return NextResponse.json({ error: "Valid project is required." }, { status: 400 });
